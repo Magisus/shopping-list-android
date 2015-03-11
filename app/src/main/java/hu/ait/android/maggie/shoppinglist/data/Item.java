@@ -35,11 +35,11 @@ public class Item {
 
     private String name;
     private boolean purchased;
-    private float priceEstimate;
+    private double priceEstimate;
     private int quantity;
     private ItemType type;
 
-    public Item(String name, ItemType type, float priceEstimate, int quantity) {
+    public Item(String name, ItemType type, double priceEstimate, int quantity) {
         purchased = false;
         this.name = name;
         this.priceEstimate = priceEstimate;
@@ -65,7 +65,7 @@ public class Item {
         return purchased;
     }
 
-    public float getPriceEstimate() {
+    public double getPriceEstimate() {
         return priceEstimate;
     }
 

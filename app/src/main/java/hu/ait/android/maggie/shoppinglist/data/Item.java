@@ -1,11 +1,15 @@
 package hu.ait.android.maggie.shoppinglist.data;
 
+import com.orm.SugarRecord;
+
+import java.io.Serializable;
+
 import hu.ait.android.maggie.shoppinglist.R;
 
 /**
  * Created by Magisus on 3/8/2015.
  */
-public class Item {
+public class Item extends SugarRecord<Item> implements Serializable {
 
     public enum ItemType {
         PRODUCE(0, R.drawable.fruit), DAIRY(1, R.drawable.dairy), BAKERY(2, R.drawable.bread),
@@ -38,6 +42,10 @@ public class Item {
     private double priceEstimate;
     private int quantity;
     private ItemType type;
+
+    public Item(){
+
+    }
 
     public Item(String name, ItemType type, double priceEstimate, int quantity) {
         purchased = false;

@@ -10,30 +10,31 @@
               android:orientation="vertical">
 
     <TextView
-        android:text="Place type:"
+        android:text="@string/item_type_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Spinner
-        android:id="@+id/spinnerPlaceType"
+        android:id="@+id/spinnerItemType"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/etPlaceName"
-        android:hint="Place name"
+        android:id="@+id/editItemName"
+        android:hint="@string/item_name_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/etPlaceDesc"
-        android:hint="Descrpition"
+        android:id="@+id/editItemPrice"
+        android:hint="@string/est_price_hint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"/>
 
     <Button
         android:id="@+id/btnSave"
-        android:hint="Save"
+        android:hint="@string/add_item_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

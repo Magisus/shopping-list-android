@@ -47,6 +47,10 @@ public class ItemAdapter extends BaseAdapter {
         ImageView icon;
     }
 
+    public void addItem(Item item){
+        items.add(item);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;

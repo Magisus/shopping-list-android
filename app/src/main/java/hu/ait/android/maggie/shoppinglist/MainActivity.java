@@ -4,9 +4,11 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +24,11 @@ public class MainActivity extends ActionBarActivity {
 
     public static final int REQUEST_CREATE = 100;
 
+    public static final int CONTEXT_ACTION_DELETE = 10;
+    public static final int CONTEXT_ACTION_EDIT = 11;
+
     private ListView itemList;
+    private ItemAdapter adapter;
     private TextView emptyText;
 
     @Override
@@ -30,23 +36,44 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Item> items = new ArrayList<>();
-//        items.add(new Item("Milk", Item.ItemType.DAIRY, 210.0, 1));
-//        items.add(new Item("Oranges", Item.ItemType.PRODUCE, 160, 3));
-//        items.add(new Item("Soap", Item.ItemType.HOUSEHOLD, 160, 3));
-//        items.add(new Item("Chocolate", Item.ItemType.CANDY, 160, 3));
-//        items.add(new Item("Soda", Item.ItemType.DRINKS, 160, 3));
-//        items.add(new Item("Bread", Item.ItemType.BAKERY, 160, 3));
+        List<Item> items = Item.listAll(Item.class);
 
         itemList = (ListView) findViewById(R.id.itemList);
-        itemList.setAdapter(new ItemAdapter(this, items));
+        adapter = new ItemAdapter(this, items);
+        itemList.setAdapter(adapter);
 
         emptyText = (TextView) findViewById(R.id.noItemsText);
         if(itemList.getAdapter().getCount() == 0){
             emptyText.setVisibility(View.VISIBLE);
         }
+
+        registerForContextMenu(itemList);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.setHeaderTitle("Menu");
+        menu.add(0, CONTEXT_ACTION_DELETE, 0, "Delete");
+        menu.add(0, CONTEXT_ACTION_EDIT, 0, "Edit");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if(item.getItemId() == CONTEXT_ACTION_DELETE) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            Item selectedItem = (Item) adapter.getItem(info.position);
+            selectedItem.delete();
+
+            adapter.removeItem(info.position);
+            adapter.notifyDataSetChanged();
+            if(adapter.getCount() == 0){
+                emptyText.setVisibility(View.VISIBLE);
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,8 +85,10 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CREATE && resultCode == RESULT_OK){
-            ((ItemAdapter) itemList.getAdapter()).addItem((Item) data.getSerializableExtra
-                    (CreateItemActivity.KEY_ITEM));
+            Item item = (Item) data.getSerializableExtra
+                    (CreateItemActivity.KEY_ITEM);
+            item.save();
+            ((ItemAdapter) itemList.getAdapter()).addItem(item);
             ((ItemAdapter) itemList.getAdapter()).notifyDataSetChanged();
             emptyText.setVisibility(View.GONE);
             Toast.makeText(this, getString(R.string.item_added_alert), Toast.LENGTH_LONG);

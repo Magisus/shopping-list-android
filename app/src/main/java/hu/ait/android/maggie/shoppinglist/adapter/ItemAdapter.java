@@ -42,6 +42,10 @@ public class ItemAdapter extends BaseAdapter {
         return position;
     }
 
+    public void removeItem(int position) {
+        items.remove(position);
+    }
+
     private class ViewHolder {
         TextView name;
         ImageView icon;

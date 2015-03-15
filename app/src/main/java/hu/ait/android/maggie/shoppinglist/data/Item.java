@@ -35,6 +35,10 @@ public class Item extends SugarRecord<Item> implements Serializable {
         public int getIconId() {
             return iconId;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     private String name;
@@ -83,5 +87,17 @@ public class Item extends SugarRecord<Item> implements Serializable {
 
     public ItemType getType() {
         return type;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPriceEstimate(double priceEstimate) {
+        this.priceEstimate = priceEstimate;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
     }
 }

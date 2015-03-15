@@ -23,7 +23,7 @@ import hu.ait.android.maggie.shoppinglist.data.Item;
 public class MainActivity extends ActionBarActivity {
 
     public static final int REQUEST_CREATE = 100;
-
+    public static final int REQUEST_EDIT = 101;
     public static final int CONTEXT_ACTION_DELETE = 10;
     public static final int CONTEXT_ACTION_EDIT = 11;
 
@@ -66,9 +66,16 @@ public class MainActivity extends ActionBarActivity {
 
             adapter.removeItem(info.position);
             adapter.notifyDataSetChanged();
-            if(adapter.getCount() == 0){
+            if (adapter.getCount() == 0) {
                 emptyText.setVisibility(View.VISIBLE);
             }
+        } else if (item.getItemId() == CONTEXT_ACTION_EDIT){
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            Item selectedItem = (Item) adapter.getItem(info.position);
+            Intent intent = new Intent(this, CreateItemActivity.class);
+            intent.putExtra(CreateItemActivity.KEY_EDIT_ITEM, selectedItem);
+            intent.putExtra(CreateItemActivity.KEY_EDIT_ID, info.position);
+            startActivityForResult(intent, REQUEST_EDIT);
         } else {
             return false;
         }
@@ -92,6 +99,17 @@ public class MainActivity extends ActionBarActivity {
             ((ItemAdapter) itemList.getAdapter()).notifyDataSetChanged();
             emptyText.setVisibility(View.GONE);
             Toast.makeText(this, getString(R.string.item_added_alert), Toast.LENGTH_LONG);
+        } else if (requestCode == REQUEST_EDIT && resultCode == RESULT_OK) {
+            int index = data.getIntExtra(CreateItemActivity.KEY_EDIT_ID, -1);
+            if(index != -1){
+                Item item = (Item) data.getSerializableExtra(CreateItemActivity.KEY_ITEM);
+                item.setId(adapter.getItem(index).getId());
+                item.save();
+
+                adapter.updateItem(index, item);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(this, "Item updated in the list!", Toast.LENGTH_LONG).show();
+            }
         } else if (resultCode == RESULT_CANCELED){
             Toast.makeText(this, getString(R.string.canceled_alert), Toast.LENGTH_LONG);
         }

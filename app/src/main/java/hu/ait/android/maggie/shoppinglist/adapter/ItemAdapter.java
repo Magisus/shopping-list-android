@@ -1,7 +1,6 @@
 package hu.ait.android.maggie.shoppinglist.adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ public class ItemAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Item getItem(int position) {
         return items.get(position);
     }
 
@@ -46,12 +45,16 @@ public class ItemAdapter extends BaseAdapter {
         items.remove(position);
     }
 
+    public void updateItem(int index, Item item) {
+        items.set(index, item);
+    }
+
     private class ViewHolder {
         TextView name;
         ImageView icon;
     }
 
-    public void addItem(Item item){
+    public void addItem(Item item) {
         items.add(item);
     }
 
@@ -66,7 +69,7 @@ public class ItemAdapter extends BaseAdapter {
             v.setTag(holder);
         }
         Item item = items.get(position);
-        if(item != null){
+        if (item != null) {
             ViewHolder holder = (ViewHolder) v.getTag();
             holder.name.setText(item.getName());
             holder.icon.setImageResource(item.getType().getIconId());

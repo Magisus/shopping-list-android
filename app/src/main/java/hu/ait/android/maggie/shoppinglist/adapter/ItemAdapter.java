@@ -52,6 +52,7 @@ public class ItemAdapter extends BaseAdapter {
     private class ViewHolder {
         TextView name;
         ImageView icon;
+        TextView amountEstimate;
     }
 
     public void addItem(Item item) {
@@ -66,6 +67,7 @@ public class ItemAdapter extends BaseAdapter {
             ViewHolder holder = new ViewHolder();
             holder.name = (TextView) v.findViewById(R.id.nameText);
             holder.icon = (ImageView) v.findViewById(R.id.iconImage);
+            holder.amountEstimate = (TextView) v.findViewById(R.id.estAmountText);
             v.setTag(holder);
         }
         Item item = items.get(position);
@@ -73,6 +75,7 @@ public class ItemAdapter extends BaseAdapter {
             ViewHolder holder = (ViewHolder) v.getTag();
             holder.name.setText(item.getName());
             holder.icon.setImageResource(item.getType().getIconId());
+            holder.amountEstimate.setText(Double.toString(item.getPriceEstimate()));
         }
         return v;
     }

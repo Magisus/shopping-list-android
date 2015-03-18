@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,14 @@ public class MainActivity extends ActionBarActivity {
         }
 
         registerForContextMenu(itemList);
+
+        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, CreateItemActivity.class), REQUEST_CREATE);
+            }
+        });
     }
 
     @Override

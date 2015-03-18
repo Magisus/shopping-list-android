@@ -40,5 +40,6 @@
         android:layout_height="wrap_content"
         android:button="@drawable/purchased_checkbox"
         android:gravity="right"
+        android:layout_marginTop="12dp"
         android:layout_weight="1"/>
 </LinearLayout>

@@ -12,4 +12,5 @@
     <string name="item_type_label">Item type:</string>
     <string name="item_added_alert">Item added to list!</string>
     <string name="canceled_alert">Cancelled</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>

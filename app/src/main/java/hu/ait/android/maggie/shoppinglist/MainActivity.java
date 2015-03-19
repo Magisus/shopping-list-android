@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import hu.ait.android.maggie.shoppinglist.adapter.ItemAdapter;
@@ -59,6 +60,8 @@ public class MainActivity extends ActionBarActivity {
                 startActivityForResult(new Intent(MainActivity.this, CreateItemActivity.class), REQUEST_CREATE);
             }
         });
+
+        updateView();
     }
 
     @Override
@@ -139,11 +142,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void removePurchased() {
-        for(int i = 0; i < adapter.getCount(); i++){
-            Item currentItem = adapter.getItem(i);
-            if(currentItem.isPurchased()){
-                adapter.removeItem(i);
-                currentItem.delete();
+        for (Iterator<Item> iterator = adapter.getIterator(); iterator.hasNext();) {
+            Item item = iterator.next();
+            if (item.isPurchased()) {
+                iterator.remove();
+                item.delete();
             }
         }
     }

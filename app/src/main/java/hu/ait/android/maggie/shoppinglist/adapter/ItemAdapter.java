@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import hu.ait.android.maggie.shoppinglist.MainActivity;
@@ -63,6 +64,10 @@ public class ItemAdapter extends BaseAdapter {
             total += item.getPriceEstimate();
         }
         return total;
+    }
+
+    public Iterator<Item> getIterator(){
+        return items.iterator();
     }
 
     public void sortByType() {
@@ -124,8 +129,10 @@ public class ItemAdapter extends BaseAdapter {
             ViewHolder holder = (ViewHolder) v.getTag();
             holder.name.setText(item.getName());
             holder.icon.setImageResource(item.getType().getIconId());
-            holder.amountEstimate.setText(context.getString(R.string.currency_symbol) + String.format("%1$,.2f",
+            holder.amountEstimate.setText(context.getString(R.string.currency_symbol) + String
+                    .format("%1$,.2f",
                     item.getPriceEstimate()));
+            holder.purchased.setChecked(item.isPurchased());
             holder.purchased.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

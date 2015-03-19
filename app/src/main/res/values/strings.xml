@@ -18,4 +18,5 @@
     <string name="typeSort">Sort by type</string>
     <string name="nameSort">Sort by name</string>
     <string name="sortCost">Sort by cost</string>
+    <string name="currency_symbol">$</string>
 </resources>

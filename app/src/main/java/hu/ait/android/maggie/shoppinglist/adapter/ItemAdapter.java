@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import hu.ait.android.maggie.shoppinglist.MainActivity;
 import hu.ait.android.maggie.shoppinglist.R;
 import hu.ait.android.maggie.shoppinglist.data.Item;
 
@@ -123,7 +124,8 @@ public class ItemAdapter extends BaseAdapter {
             ViewHolder holder = (ViewHolder) v.getTag();
             holder.name.setText(item.getName());
             holder.icon.setImageResource(item.getType().getIconId());
-            holder.amountEstimate.setText(Double.toString(item.getPriceEstimate()));
+            holder.amountEstimate.setText(context.getString(R.string.currency_symbol) + String.format("%1$,.2f",
+                    item.getPriceEstimate()));
             holder.purchased.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

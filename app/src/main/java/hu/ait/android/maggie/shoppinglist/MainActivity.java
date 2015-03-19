@@ -29,8 +29,6 @@ public class MainActivity extends ActionBarActivity {
     public static final int CONTEXT_ACTION_DELETE = 10;
     public static final int CONTEXT_ACTION_EDIT = 11;
 
-    private static final String CURRENCY_SYMBOL = "$";
-
     private ListView itemList;
     private ItemAdapter adapter;
 
@@ -136,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void updateView() {
-        totalAmountText.setText(CURRENCY_SYMBOL + String.format("%1$,.2f", adapter.getTotal()));
+        totalAmountText.setText(getString(R.string.currency_symbol) + String.format("%1$,.2f", adapter.getTotal()));
         adapter.notifyDataSetChanged();
     }
 

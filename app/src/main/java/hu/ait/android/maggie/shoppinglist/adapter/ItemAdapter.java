@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,10 +50,15 @@ public class ItemAdapter extends BaseAdapter {
         items.set(index, item);
     }
 
+    public void removeAll() {
+        items.clear();
+    }
+
     private class ViewHolder {
         TextView name;
         ImageView icon;
         TextView amountEstimate;
+        CheckBox purchased;
     }
 
     public void addItem(Item item) {
@@ -68,14 +74,22 @@ public class ItemAdapter extends BaseAdapter {
             holder.name = (TextView) v.findViewById(R.id.nameText);
             holder.icon = (ImageView) v.findViewById(R.id.iconImage);
             holder.amountEstimate = (TextView) v.findViewById(R.id.estAmountText);
+            holder.purchased = (CheckBox) v.findViewById(R.id.purchasedCheckBox);
             v.setTag(holder);
         }
-        Item item = items.get(position);
+        final Item item = items.get(position);
         if (item != null) {
             ViewHolder holder = (ViewHolder) v.getTag();
             holder.name.setText(item.getName());
             holder.icon.setImageResource(item.getType().getIconId());
             holder.amountEstimate.setText(Double.toString(item.getPriceEstimate()));
+            holder.purchased.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    item.setPurchased(((CheckBox) v).isChecked());
+                }
+            });
+
         }
         return v;
     }

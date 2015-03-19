@@ -31,7 +31,6 @@ public class MainActivity extends ActionBarActivity {
 
     private ListView itemList;
     private ItemAdapter adapter;
-    private TextView emptyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +43,8 @@ public class MainActivity extends ActionBarActivity {
         adapter = new ItemAdapter(this, items);
         itemList.setAdapter(adapter);
 
-        emptyText = (TextView) findViewById(R.id.noItemsText);
-        if(itemList.getAdapter().getCount() == 0){
-            emptyText.setVisibility(View.VISIBLE);
-        }
+        TextView emptyText = (TextView) findViewById(R.id.noItemsText);
+        itemList.setEmptyView(emptyText);
 
         registerForContextMenu(itemList);
 
@@ -76,9 +73,7 @@ public class MainActivity extends ActionBarActivity {
 
             adapter.removeItem(info.position);
             adapter.notifyDataSetChanged();
-            if (adapter.getCount() == 0) {
-                emptyText.setVisibility(View.VISIBLE);
-            }
+
         } else if (item.getItemId() == CONTEXT_ACTION_EDIT){
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             Item selectedItem = (Item) adapter.getItem(info.position);
@@ -100,6 +95,32 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_remove_all) {
+            Item.deleteAll(Item.class);
+            adapter.removeAll();
+            adapter.notifyDataSetChanged();
+        } else if (id == R.id.action_remove_purchased){
+            for(int i = 0; i < adapter.getCount(); i++){
+                Item currentItem = adapter.getItem(i);
+                if(currentItem.isPurchased()){
+                    adapter.removeItem(i);
+                    currentItem.delete();
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_CREATE && resultCode == RESULT_OK){
             Item item = (Item) data.getSerializableExtra
@@ -107,7 +128,6 @@ public class MainActivity extends ActionBarActivity {
             item.save();
             ((ItemAdapter) itemList.getAdapter()).addItem(item);
             ((ItemAdapter) itemList.getAdapter()).notifyDataSetChanged();
-            emptyText.setVisibility(View.GONE);
             Toast.makeText(this, getString(R.string.item_added_alert), Toast.LENGTH_LONG);
         } else if (requestCode == REQUEST_EDIT && resultCode == RESULT_OK) {
             int index = data.getIntExtra(CreateItemActivity.KEY_EDIT_ID, -1);
@@ -124,20 +144,5 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(this, getString(R.string.canceled_alert), Toast.LENGTH_LONG);
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_new) {
-            startActivityForResult(new Intent(this, CreateItemActivity.class), REQUEST_CREATE);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -60,8 +60,8 @@ public class Item extends SugarRecord<Item> implements Serializable {
 
     }
 
-    public void togglePurchased() {
-        purchased = !purchased;
+    public void setPurchased(boolean value) {
+        purchased = value;
     }
 
     public void setQuantity(int quantity) {

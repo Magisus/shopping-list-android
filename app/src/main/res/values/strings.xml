@@ -13,4 +13,5 @@
     <string name="item_added_alert">Item added to list!</string>
     <string name="canceled_alert">Cancelled</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="delete_menu">Delete</string>
 </resources>

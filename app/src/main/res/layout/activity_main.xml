@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/noItemsText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="370dp"
             android:gravity="center"
             android:text="@string/empty_placeholder"
             android:textSize="20sp"

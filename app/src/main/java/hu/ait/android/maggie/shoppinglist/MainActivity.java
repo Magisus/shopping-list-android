@@ -121,7 +121,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void updateView() {
-        totalAmountText.setText(CURRENCY_SYMBOL + adapter.getTotal());
+        totalAmountText.setText(CURRENCY_SYMBOL + String.format("%1$,.2f", adapter.getTotal()));
         adapter.notifyDataSetChanged();
     }
 

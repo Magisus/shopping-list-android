@@ -54,6 +54,14 @@ public class ItemAdapter extends BaseAdapter {
         items.clear();
     }
 
+    public double getTotal(){
+        double total = 0;
+        for(Item item : items){
+            total += item.getPriceEstimate();
+        }
+        return total;
+    }
+
     private class ViewHolder {
         TextView name;
         ImageView icon;

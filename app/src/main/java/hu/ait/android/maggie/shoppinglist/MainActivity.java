@@ -29,8 +29,12 @@ public class MainActivity extends ActionBarActivity {
     public static final int CONTEXT_ACTION_DELETE = 10;
     public static final int CONTEXT_ACTION_EDIT = 11;
 
+    private static final String CURRENCY_SYMBOL = "$";
+
     private ListView itemList;
     private ItemAdapter adapter;
+
+    private TextView totalAmountText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,8 @@ public class MainActivity extends ActionBarActivity {
 
         TextView emptyText = (TextView) findViewById(R.id.noItemsText);
         itemList.setEmptyView(emptyText);
+
+        totalAmountText = (TextView) findViewById(R.id.totalAmount);
 
         registerForContextMenu(itemList);
 
@@ -72,7 +78,7 @@ public class MainActivity extends ActionBarActivity {
             selectedItem.delete();
 
             adapter.removeItem(info.position);
-            adapter.notifyDataSetChanged();
+            updateView();
 
         } else if (item.getItemId() == CONTEXT_ACTION_EDIT){
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -105,19 +111,28 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_remove_all) {
             Item.deleteAll(Item.class);
             adapter.removeAll();
-            adapter.notifyDataSetChanged();
+            updateView();
         } else if (id == R.id.action_remove_purchased){
-            for(int i = 0; i < adapter.getCount(); i++){
-                Item currentItem = adapter.getItem(i);
-                if(currentItem.isPurchased()){
-                    adapter.removeItem(i);
-                    currentItem.delete();
-                }
-            }
-            adapter.notifyDataSetChanged();
+            removePurchased();
+            updateView();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateView() {
+        totalAmountText.setText(CURRENCY_SYMBOL + adapter.getTotal());
+        adapter.notifyDataSetChanged();
+    }
+
+    private void removePurchased() {
+        for(int i = 0; i < adapter.getCount(); i++){
+            Item currentItem = adapter.getItem(i);
+            if(currentItem.isPurchased()){
+                adapter.removeItem(i);
+                currentItem.delete();
+            }
+        }
     }
 
     @Override
@@ -127,7 +142,7 @@ public class MainActivity extends ActionBarActivity {
                     (CreateItemActivity.KEY_ITEM);
             item.save();
             ((ItemAdapter) itemList.getAdapter()).addItem(item);
-            ((ItemAdapter) itemList.getAdapter()).notifyDataSetChanged();
+            updateView();
             Toast.makeText(this, getString(R.string.item_added_alert), Toast.LENGTH_LONG);
         } else if (requestCode == REQUEST_EDIT && resultCode == RESULT_OK) {
             int index = data.getIntExtra(CreateItemActivity.KEY_EDIT_ID, -1);
@@ -137,7 +152,7 @@ public class MainActivity extends ActionBarActivity {
                 item.save();
 
                 adapter.updateItem(index, item);
-                adapter.notifyDataSetChanged();
+                updateView();
                 Toast.makeText(this, "Item updated in the list!", Toast.LENGTH_LONG).show();
             }
         } else if (resultCode == RESULT_CANCELED){

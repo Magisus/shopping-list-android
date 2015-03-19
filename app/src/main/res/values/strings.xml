@@ -14,4 +14,5 @@
     <string name="canceled_alert">Cancelled</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="delete_menu">Delete</string>
+    <string name="total_default">$0.00</string>
 </resources>

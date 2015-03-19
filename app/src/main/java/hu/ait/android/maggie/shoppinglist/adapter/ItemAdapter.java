@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import hu.ait.android.maggie.shoppinglist.R;
@@ -60,6 +62,37 @@ public class ItemAdapter extends BaseAdapter {
             total += item.getPriceEstimate();
         }
         return total;
+    }
+
+    public void sortByType() {
+        Collections.sort(items, new Comparator<Item>() {
+            @Override
+            public int compare(Item lhs, Item rhs) {
+                if(lhs.getType().getValue() >= rhs.getType().getValue()){
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+    }
+
+    public void sortByName(){
+        Collections.sort(items, new Comparator<Item>() {
+            @Override
+            public int compare(Item lhs, Item rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+    }
+
+    public void sortByCost() {
+        Collections.sort(items, new Comparator<Item>() {
+            @Override
+            public int compare(Item lhs, Item rhs) {
+                return Double.compare(lhs.getPriceEstimate(), rhs.getPriceEstimate());
+            }
+        });
     }
 
     private class ViewHolder {

@@ -23,4 +23,32 @@
                 compat:showAsAction="always"/>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/sort_actions"
+        android:title="Sort"
+        android:orderInCategory="99"
+        compat:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_sort_by_size">
+        <menu>
+            <item
+                android:id="@+id/action_sort_type"
+                android:title="@string/typeSort"
+                android:orderInCategory="100"
+                compat:showAsAction="always"/>
+
+            <item
+                android:id="@+id/action_sort_name"
+                android:title="@string/nameSort"
+                android:orderInCategory="101"
+                compat:showAsAction="always"/>
+
+            <item
+                android:id="@+id/action_sort_cost"
+                android:title="@string/sortCost"
+                android:orderInCategory="102"
+                compat:showAsAction="always"/>
+        </menu>
+
+    </item>
 </menu>

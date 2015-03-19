@@ -108,13 +108,28 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_remove_all) {
-            Item.deleteAll(Item.class);
-            adapter.removeAll();
-            updateView();
-        } else if (id == R.id.action_remove_purchased){
-            removePurchased();
-            updateView();
+        switch(id) {
+            case R.id.action_remove_all:
+                Item.deleteAll(Item.class);
+                adapter.removeAll();
+                updateView();
+                return true;
+            case R.id.action_remove_purchased:
+                removePurchased();
+                updateView();
+                return true;
+            case R.id.action_sort_type:
+                adapter.sortByType();
+                updateView();
+                return true;
+            case R.id.action_sort_name:
+                adapter.sortByName();
+                updateView();
+                return true;
+            case R.id.action_sort_cost:
+                adapter.sortByCost();
+                updateView();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
